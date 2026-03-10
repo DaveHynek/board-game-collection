@@ -1,26 +1,15 @@
 import { useGoogleLogin } from '@react-oauth/google'
-import { useState } from 'react'
-
-const SHEET_ID = "16DBKav8EYK8yDCZMLB1AhVSO4cR8jDTjFDVpC3EBQ1E"
-const RANGE = "Board Game List!A1:E100"
+import { useGames } from './game_context/game_context'
+import { GameGrid } from './components/gameGrid'
 
 function App() {
-  const [data, setData] = useState(null)
+  const { setToken } = useGames()
 
   const login = useGoogleLogin({
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
     onSuccess: async (tokenResponse) => {
-      const res = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-          },
-        }
-      )
-
-      const json = await res.json()
-      setData(json.values)
+      setToken(tokenResponse.access_token)
+      console.log('Login successful, access token stored.')
     }
   })
 
@@ -32,19 +21,7 @@ function App() {
         Sign in with Google
       </button>
 
-      {data && (
-        <table border="1" cellPadding="5">
-          <tbody>
-            {data.map((row, i) => (
-              <tr key={i}>
-                {row.map((cell, j) => (
-                  <td key={j}>{cell}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <GameGrid />
     </div>
   )
 }
