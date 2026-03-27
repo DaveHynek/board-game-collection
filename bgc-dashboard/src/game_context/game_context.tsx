@@ -54,12 +54,16 @@ export function GameProvider({children}: {children: React.ReactNode}) {
         var nameIndex: number
         var minPlayersIndex: number
         var maxPlayersIndex: number
+        var minTimeIndex: number
+        var maxTimeIndex: number
         var imgUrlIndex: number
 
         data.values[0].forEach((header: string, index: number) => {
             if(header === 'Name') nameIndex = index
             else if(header === 'Min Players') minPlayersIndex = index
             else if(header === 'Max Players') maxPlayersIndex = index
+            else if(header === 'Min Time') minTimeIndex = index
+            else if(header === 'Max Time') maxTimeIndex = index
             else if(header === 'Img Url') imgUrlIndex = index
         })
 
@@ -68,6 +72,8 @@ export function GameProvider({children}: {children: React.ReactNode}) {
                 name: data.values[i][nameIndex!],
                 minPlayers: parseInt(data.values[i][minPlayersIndex!]),
                 maxPlayers: parseInt(data.values[i][maxPlayersIndex!]),
+                minTime: parseInt(data.values[i][minTimeIndex!]),
+                maxTime: parseInt(data.values[i][maxTimeIndex!]),
                 imgUrl: data.values[i][imgUrlIndex!]
             }
             games.push(game)

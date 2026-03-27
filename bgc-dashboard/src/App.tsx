@@ -3,7 +3,7 @@ import { useGames } from './game_context/game_context'
 import { GameGrid } from './components/gameGrid'
 
 function App() {
-  const { setToken } = useGames()
+  const { setToken, games} = useGames()
 
   const login = useGoogleLogin({
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
@@ -15,11 +15,13 @@ function App() {
 
   return (
     <div style={{ padding: 40 }}>
-      <h1>Private Sheets Dashboard</h1>
+      <h1>Board Game Collection</h1>
 
-      <button onClick={() => login()}>
-        Sign in with Google
-      </button>
+      {games.length === 0 ? (
+        <button onClick={() => login()}>
+          Sign in with Google
+        </button>
+      ) : ''}
 
       <GameGrid />
     </div>
